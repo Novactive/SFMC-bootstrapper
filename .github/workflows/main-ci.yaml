@@ -1,0 +1,28 @@
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+    tests:
+        name: Tests
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ 7.2, 7.3, 7.4, 8.0 ]
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@master
+                with:
+                    php-version: ${{ matrix.php }}
+                id: php
+
+            -   name: Install dependencies
+                run: make install
+
+            -   name: Generate
+                run: make build
+
+            -   name: Clean
+                run: make clean

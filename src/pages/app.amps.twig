@@ -1,0 +1,7 @@
+{% extends layout %}
+{% block body %}
+    <div class="container app"
+         data-is-logged-in="false"
+         data-config="{{ reactVars|json_encode|escape('html_attr') }}"
+    ></div>
+{% endblock %}

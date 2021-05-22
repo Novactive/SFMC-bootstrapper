@@ -1,0 +1,74 @@
+<script runat="server">
+    Platform.Load("core", "1.1");
+
+
+    // usefull to build a consistend response
+    function buildResponse (status, data) {
+        Platform.Response.Write(Stringify(
+            {
+                status: status,
+                data: data
+            }
+        ));
+    }
+
+    function get (user, action, params) {
+        var messages = [];
+        var returnedData = null;
+
+        switch (action) {
+
+            //@todo: do your own logic
+
+            default:
+                throw 'GET action ' + action + ' does not exist.';
+        }
+        return {
+            messages: messages,
+            returnedData: returnedData
+        };
+    }
+
+    function post (user, action, params) {
+        var messages = [];
+        var returnedData = null;
+
+        switch (action) {
+
+            //@todo: do your own logic
+
+            default:
+                throw 'POST action ' + action + ' does not exist.';
+        }
+
+        return {
+            messages: messages,
+            returnedData: returnedData
+        };
+    }
+
+
+    try {
+
+        var action = Platform.Request.GetQueryStringParameter('action');
+        var method = Platform.Request.GetQueryStringParameter('method');
+        switch (method) {
+            case 'get':
+                buildResponse('success', get(user, action, {
+                    //@todo: you might need more here need
+                    id: Platform.Request.GetQueryStringParameter('id'),
+                }));
+                break;
+            case 'post':
+                buildResponse('success', post(user, action, Platform.Function.ParseJSON(Platform.Request.GetPostData())));
+                break;
+            default:
+                buildResponse('failed', "Method: " + method + " does not exist.");
+                break;
+        }
+
+
+    } catch (exception) {
+        buildResponse('failed', exception);
+    }
+</script>

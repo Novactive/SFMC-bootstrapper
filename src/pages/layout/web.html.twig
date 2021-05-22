@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <style>
+        pre.code {
+            border: 1px solid red;
+            padding: 5px;
+            font-size: 9px;
+            background: #fefefe;
+            opacity: 0.65;
+        }
+    </style>
+    <title>Local Web - SFMC Bootstrapper</title>
+</head>
+<body>
+<script>
+    var Platform = {
+        Load: function () {
+            console.log("Load", arguments);
+        },
+        Variable: {
+            SetValue: function () {
+                console.log("SetValue", arguments);
+            },
+            GetValue: function () {
+                console.log("GetValue", arguments);
+                return [];
+            }
+        },
+        Response: {
+            SetCookie: function () {
+                console.log("SetCookie", arguments);
+            }
+        },
+        Request: {
+            GetCookieValue: function () {
+                console.log("GetCookieValue", arguments);
+            }
+        }
+    };
+</script>
+<style>{{ styles }}</style>
+{% block body %}{% endblock %}
+<script type="text/javascript">{{ javascripts|raw }}</script>
+</body>
+</html>

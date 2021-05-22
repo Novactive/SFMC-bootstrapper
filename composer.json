@@ -1,0 +1,37 @@
+{
+    "name": "almaviacx/sfmc-bootstrapper",
+    "description": "A starting point to build Salesforce Marketing Cloud Application like a rockstar",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Plopix",
+            "homepage": "https://plopix.github.io"
+        },
+        {
+            "name": "AlmaviaCX",
+            "homepage": "https://github.com/Novactive"
+        }
+    ],
+    "type": "project",
+    "require": {
+        "php": ">=5.6",
+        "twig/twig": "^3.0",
+        "symfony/http-client": "^5.2",
+        "ext-zlib": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2"
+    },
+    "scripts": {
+        "install-scripts": [
+            "yarn install",
+            "yarn build-dev"
+        ],
+        "post-install-cmd": [
+            "@install-scripts"
+        ],
+        "post-create-project-cmd": [
+            "@install-scripts"
+        ]
+    }
+}
