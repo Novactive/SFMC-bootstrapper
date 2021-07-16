@@ -1,7 +1,42 @@
 {% extends layout %}
 {% block body %}
+    %%[
+        set @email = RequestParameter("_email")
+        set @password = RequestParameter("_password")
+        if @email != '' and @password != '' and @page != '' then
+            set @rows = LookupRows("{{ DE.Users }}", "email", @email, "password", md5(concat(@password,'{{ security.salt }}')))
+            if RowCount(@rows) == 1 then
+                set @sessionId = md5(concat(@email, 'sessionId', @password))
+                UpsertData("{{ DE.Users }}",1,"email",@email,'sessionId',@sessionId)
+                ]%%
+                {% embed "includes/runat_server.html.twig" %}{% block code %}
+                    Platform.Response.SetCookie("sessionId", Platform.Variable.GetValue("@sessionId"));
+                {% endblock %}{% endembed %}
+                %%[
+                Redirect("$somewhere$ to your spa")
+            endif
+        endif
+    ]%%
+    {% embed "includes/runat_server.html.twig" %}{% block code %}
+        var sessionId = Platform.Request.GetCookieValue("sessionId");
+        Platform.Variable.SetValue("@sessionId", sessionId);
+    {% endblock %}{% endembed %}
+    %%[
+        set @rows = LookupRows("{{ DE.Users }}", "sessionId", @sessionId)
+        if RowCount(@rows) == 1 then
+            set @firstname = Field(Row(@rows, 1), 'firstname')
+            set @lastname = Field(Row(@rows, 1), 'lastname')
+            set @email = Field(Row(@rows, 1), 'email')
+    ]%%
     <div class="container app"
-         data-is-logged-in="false"
+         data-is-logged-in="true"
          data-config="{{ reactVars|json_encode|escape('html_attr') }}"
+         data-user='{"firstname": "{{ echo('@firstname') }}", "lastname": "{{ echo('@lastname') }}", "email": "{{ echo('@email') }}"}'
     ></div>
+    %%[ else ]%%
+        <div class="container app"
+             data-is-logged-in="false"
+             data-config="{{ reactVars|json_encode|escape('html_attr') }}"
+        ></div>
+    %%[ endif ]%%
 {% endblock %}

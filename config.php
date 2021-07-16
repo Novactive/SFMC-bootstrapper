@@ -21,6 +21,9 @@ $routes = [
 ];
 
 return [
+    'DE' => [
+        'Users' => 'TBL_Users',
+    ],
     'routes' => $routes,
     'reactVars' => [
         // you can inject anything here, that'll be exposed to react
